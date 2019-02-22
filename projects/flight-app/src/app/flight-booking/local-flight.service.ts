@@ -1,12 +1,13 @@
 import {db,  flightsTableName} from './db';
 import { Injectable } from '@angular/core';
+import {Flight} from "@flight-workspace/flight-api";
 
 @Injectable({
     providedIn: 'root'
 })
 export class LocalFlightService {
 
-    save(flight: object): Promise<any> {
+    save(flight: Flight): Promise<any> {
 
         const entry = {
             id: flight.id,

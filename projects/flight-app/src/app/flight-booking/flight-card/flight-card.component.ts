@@ -62,7 +62,7 @@ export class FlightCardComponent implements OnInit, OnChanges, OnDestroy {
         return null;
     }
 
-    public saveFlight() {
+    public saveFlight(id: any) {
         this.localFlightService.save(this.item);
     }
 
