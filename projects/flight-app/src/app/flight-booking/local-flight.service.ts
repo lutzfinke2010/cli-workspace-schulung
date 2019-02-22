@@ -25,4 +25,10 @@ export class LocalFlightService {
         });
     }
 
+    loadAll(): Promise<any>  {
+        return db.table(flightsTableName).toArray().then((entry) => {
+            console.log('load All Flight: ', entry);
+            return entry.map(ent => ent.flight);
+        });
+    }
 }

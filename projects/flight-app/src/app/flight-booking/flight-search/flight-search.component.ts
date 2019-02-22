@@ -1,34 +1,36 @@
 import {Component, OnInit} from '@angular/core';
 import {FlightService} from '@flight-workspace/flight-api';
 import {LocalBasketService} from "../local-basket.service";
+import {LocalFlightService} from "../local-flight.service";
 
 @Component({
-  selector: 'flight-search',
-  templateUrl: './flight-search.component.html',
-  styleUrls: ['./flight-search.component.css']
+    selector: 'flight-search',
+    templateUrl: './flight-search.component.html',
+    styleUrls: ['./flight-search.component.css']
 })
 export class FlightSearchComponent implements OnInit {
 
-  from: string = 'Hamburg'; // in Germany
-  to: string = 'Graz'; // in Austria
-  urgent: boolean = false;
+    from: string = 'Hamburg'; // in Germany
+    to: string = 'Graz'; // in Austria
+    urgent: boolean = false;
 
-  get flights() {
-    return this.flightService.flights;
-  }
+    get flights() {
+        return this.flightService.flights;
+    }
 
-  // "shopping basket" with selected flights
-  basket: object = {
-    "3": true,
-    "5": true
-  };
+    // "shopping basket" with selected flights
+    basket: object = {
+        "3": true,
+        "5": true
+    };
 
-  constructor(        private localBasketService: LocalBasketService,
-    private flightService: FlightService) {
-  }
+    constructor(private localBasketService: LocalBasketService,
+                private flightService: FlightService,
+                private localFlightService: LocalFlightService) {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
     saveBasket(): void {
         this.localBasketService.save(this.basket).then(
@@ -39,20 +41,29 @@ export class FlightSearchComponent implements OnInit {
 
     loadBasket(): void {
         this.localBasketService.load().then(
-            basket => { this.basket = basket;console.debug('successfully saved basket', basket); },
+            basket => {
+                this.basket = basket;
+                console.debug('successfully saved basket', basket);
+            },
             err => console.error('error loading basket', err)
         );
     }
 
-  search(): void {
-    if (!this.from || !this.to) return;
+    loadSavedFlights(): void {
+        this.localFlightService.loadAll().then((flight) = >{
+            this.flig
+        })
+    }
 
-    this.flightService
-      .load(this.from, this.to, this.urgent);
-  }
+    search(): void {
+        if (!this.from || !this.to) return;
 
-  delay(): void {
-    this.flightService.delay();
-  }
+        this.flightService
+            .load(this.from, this.to, this.urgent);
+    }
+
+    delay(): void {
+        this.flightService.delay();
+    }
 
 }

@@ -33,6 +33,7 @@
           (click)="delay()">
           Delay 1st Flight
         </button>
+        <button class="btn btn-primary" (click)="loadSavedFlights()">Load saved Flights</button>
 
         <div *ngIf="flights.length > 0">
           {{flights.length}} flights found!
