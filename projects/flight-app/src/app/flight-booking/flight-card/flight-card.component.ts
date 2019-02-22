@@ -1,64 +1,70 @@
 import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  NgZone,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  Output,
-  SimpleChanges
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    NgZone,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    Output,
+    SimpleChanges
 } from '@angular/core';
 import {Flight} from '@flight-workspace/flight-api';
+import {LocalBasketService} from "../local-basket.service";
+import {LocalFlightService} from "../local-flight.service";
 
 @Component({
-  selector: 'flight-card',
-  templateUrl: './flight-card.component.html',
-  // changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'flight-card',
+    templateUrl: './flight-card.component.html',
+    // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FlightCardComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() item: Flight;
-  @Input() selected: boolean;
-  @Output() selectedChange = new EventEmitter<boolean>();
+    @Input() item: Flight;
+    @Input() selected: boolean;
+    @Output() selectedChange = new EventEmitter<boolean>();
 
-  constructor(private element: ElementRef, private zone: NgZone) {
-  }
+        constructor(private element: ElementRef, private zone: NgZone, private localFlightService: LocalFlightService) {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+    }
 
-  ngOnChanges(changes: SimpleChanges): void {
-  }
+    ngOnChanges(changes: SimpleChanges): void {
+    }
 
-  ngOnDestroy(): void {
-  }
+    ngOnDestroy(): void {
+    }
 
-  select() {
-    this.selected = true;
-    this.selectedChange.next(true);
-  }
+    select() {
+        this.selected = true;
+        this.selectedChange.next(true);
+    }
 
-  deselect() {
-    this.selected = false;
-    this.selectedChange.next(false);
-  }
+    deselect() {
+        this.selected = false;
+        this.selectedChange.next(false);
+    }
 
-  blink() {
-    // Dirty Hack used to visualize the change detector
-    // let originalColor = this.element.nativeElement.firstChild.style.backgroundColor;
-    this.element.nativeElement.firstChild.style.backgroundColor = 'crimson';
-    //              ^----- DOM-Element
+    blink() {
+        // Dirty Hack used to visualize the change detector
+        // let originalColor = this.element.nativeElement.firstChild.style.backgroundColor;
+        this.element.nativeElement.firstChild.style.backgroundColor = 'crimson';
+        //              ^----- DOM-Element
 
-    this.zone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.element.nativeElement.firstChild.style.backgroundColor = 'white';
-      }, 1000);
-    });
+        this.zone.runOutsideAngular(() => {
+            setTimeout(() => {
+                this.element.nativeElement.firstChild.style.backgroundColor = 'white';
+            }, 1000);
+        });
 
-    return null;
-  }
+        return null;
+    }
+
+    public saveFlight() {
+        this.localFlightService.save(this.item);
+    }
 
 
 }
